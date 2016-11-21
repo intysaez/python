@@ -62,7 +62,7 @@ class featuresMgt:
         else:
             #First time: create the list of features ignoring ignore list
             list = {}
-            for file in os.listdir('.'):
+            for file in os.listdir(self.__cfg['lib']['libDir']):
                 if os.path.isdir(file) == False and file not in open(cts.featureIgnore,'rb'):
                     list[str(self.fileSignature(file))] = file
             #Serialize list object

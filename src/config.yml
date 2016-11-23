@@ -1,0 +1,12 @@
+#Config file for FileTracking
+lib:
+  libDir: '.'
+
+remote:
+  libDir: ''
+
+features:
+  file: 'installedFeatures.txt'
+
+repos:
+  folder: '../.repos/'

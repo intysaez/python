@@ -88,6 +88,7 @@ class featuresMgt:
 
     def reportDiff(self):
         import difflib as Compare
+        import sys
 
         upList = self.updateList()
         result = []
@@ -101,8 +102,10 @@ class featuresMgt:
 
                             for diff in Compare.unified_diff(source.readlines(), target.readlines()):
                                 result.append(diff)
-                    source.close()
-                    target.close()
+                else:
+                    print('File %s do not exist on %s folder' % (el, self.__cfg['repos']['folder']))
+        source.close()
+        target.close()
         return result
 
 import pprint
@@ -111,3 +114,5 @@ print(test.getFeatures())
 print('New features coming from: ')
 print(test.updateList())
 pprint.pprint(test.reportDiff())
+
+#Comment for identify this file

@@ -6,8 +6,41 @@ This repository will hosted students contributions for IT Automation with Python
 
 #Project request:
 
-An runtime update python package
+An runtime update/upgrade python packages
 
 Filesystem change track & update python program with not restart program 
 
-I expect a lot of contributions from all of you students
+**Groups for Python Class**
+
+**Group 1 - Task -1: Files tracking**
+1. 	Dawood Bogdadi
+2. 	Mirza Shoheb
+3. 	John Dinakar
+4. 	Ranjit Bhatta
+
+**Group 2 - Task -2: Files compare**
+1. 	Haskar Santhosh
+2. 	Ramesh Lingolu
+3. 	Prashanth Reddy
+4. 	Dinesh Venkata
+
+**Group 3 - Task -3: Files update**
+1. 	Vijay Uppu
+2. 	Mounika Pitta
+3. 	Lalithya Naga
+4. 	Dasharath Mangali
+
+**Group 4 - Task -4: files upgrade**
+1. 	Nagarjuna Donthagani
+	
+
+**Group 5 - Task -5: Version control**
+1. Nadikattu 
+2. Inty Saez
+
+#**General instructions**	
+- Each team will have one branch into the project. Installling git on your personal computer (Windows or Linux)
+- Team can download a copy of his repository by cloning their branch into the local computer by typing 
+	git clone https://github.com/intysaez/python.git
+- Each team can add/remove/update their own branch but only Nadikatty or me can make a merge into the **master** branch
+

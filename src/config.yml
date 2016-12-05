@@ -3,7 +3,11 @@ lib:
   libDir: '.'
 
 remote:
-  libDir: ''
+  libDir: 'python'
+  host: 'hadoop-master'
+    protocol: 'ssh'
+    user: 'python'
+    pass: 'python'
 
 features:
   file: 'installedFeatures.txt'

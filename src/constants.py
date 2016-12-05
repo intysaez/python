@@ -7,3 +7,5 @@
 
 configFileName = 'config.yml'
 featureIgnore = '.fignore'
+
+ERROR_INVALID_NAME = 'A001'

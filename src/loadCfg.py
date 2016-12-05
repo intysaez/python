@@ -15,14 +15,18 @@
 import constants as cts
 import ruamel.yaml as yaml
 
-class loadConfig(object):
+class loadConfig():
+
+    __cfg = object
 
     def __init__(self):
-        self.loadCfg()
+        self.loadConfig()
 
-    def loadCfg(self):
+    def getCfg(self):
+        return self.__cfg
+
+    def loadConfig(self):
         try:
-            result = yaml.load(open(cts.configFileName,'r').read(), yaml.RoundTripLoader)
+            self.__cfg = yaml.load(open(cts.configFileName,'r').read(), yaml.RoundTripLoader)
         except yaml.YAMLError as exc:
             print('Error during load yml config file' + exc)
-        return result

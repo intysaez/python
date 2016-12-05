@@ -1,16 +1,20 @@
 #Config file for FileTracking
+
 lib:
-  libDir: '.'
+    libDir: '.'
 
 remote:
   libDir: 'python'
-  host: 'hadoop-master'
+  host:
+    sshKeyFile: '/home/inty/.ssh/id_rsa'
+    hostName: 'hadoop-master'
     protocol: 'ssh'
-    user: 'python'
-    pass: 'python'
+    username: 'hduser'
+    pass: ''
+    port: 'default'
 
 features:
-  file: 'installedFeatures.txt'
+    file: 'installedFeatures.txt'
 
 repos:
-  folder: '../.repos/'
+    folder: '../.repos/'

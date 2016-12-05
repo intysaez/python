@@ -16,6 +16,7 @@ import os
 import platform
 import sys
 import fileSystemUtils as fs
+import remoteSynch as rsyn
 
 class reposManager():
 
@@ -41,7 +42,8 @@ class reposManager():
             #Under Unix system, UNC use the following format for network file address
             if len(fs.sshRemote(address)) != 0:
                 #Read a remote address and get back the files list
-                return []
+                remote = rsyn.remoteSync()
+                return remote.getRemoteFileList()
 
 
 from pprint import pprint

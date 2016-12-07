@@ -4,14 +4,15 @@ lib:
     libDir: '.'
 
 remote:
-  libDir: 'python'
+  libDir: '/home/hduser/python'
+  prefix: '/home/'
   host:
     sshKeyFile: '/home/inty/.ssh/id_rsa'
     hostName: 'hadoop-master'
     protocol: 'ssh'
     username: 'hduser'
-    pass: ''
-    port: 'default'
+    pass: 'hadoop'
+    port: '22'
 
 features:
     file: 'installedFeatures.txt'

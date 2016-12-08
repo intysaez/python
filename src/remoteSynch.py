@@ -80,7 +80,7 @@ class remoteSync(loadConfig):
     def getRemoteFileList(self, address):
         result = []
         self._sftpConnect()
-        remotePath = self._cfg['remote']['prefix'] + self._cfg['remote']['host']['username'] + '/' + address
+        remotePath = ''.join([self._cfg['remote']['prefix'], self._cfg['remote']['host']['username'],'/', address])
         with closing(self._sftp) as sftp:
             sftp.chdir(remotePath)
             for filename in sftp.listdir():

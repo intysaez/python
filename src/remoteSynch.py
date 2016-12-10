@@ -17,10 +17,7 @@ from loadCfg import loadConfig
 from contextlib import closing
 import tempfile
 import os
-import getpass
 import paramiko
-from paramiko import SSHConfig, SSHClient
-import constants as cts
 
 
 
@@ -29,13 +26,23 @@ class remoteSync(loadConfig):
 
     def __init__(self):
         loadConfig.__init__(self)
+        self.__initializeCfg()
+        self.__initializeLogFile()
+        self.__initializeSftp()
+        self.__sftpConnect()
 
+    def __initializeLogFile(self):
+        # Log file for debug all paramiko module activities
         logFile = tempfile.mkstemp('.log','ssh-')[1]
         paramiko.util.log_to_file(logFile)
 
+
+    def __initializeCfg(self):
         #Load config key-value
         self._cfg = loadConfig.getCfg(self)
 
+    def __initializeSftp(self):
+        # Initialize the connection to secure file transfer protocol
         self._sftp_life = False
         self._sftp = False
 
@@ -61,7 +68,8 @@ class remoteSync(loadConfig):
             private_key = None
             self._transport.connect(username= self._cfg['remote']['host']['username'], pkey= rsa_key)
 
-    def _sftpConnect(self):
+    def __sftpConnect(self):
+        # Establish sftp connection and set _sftp class variable
         if not self._sftp_life:
             self._sftp = paramiko.SFTPClient.from_transport(self._transport)
             self._sftp_life = True
@@ -71,15 +79,16 @@ class remoteSync(loadConfig):
 
 
     def getRemoteCWD(self):
-        self._sftpConnect()
+        # Get current working directory on remote machine. By default, SFTP do not have a current working directory concep.
+        # paramiko module emulate the working directory
         with closing(self._sftp) as sftp:
             cwd = sftp.getcwd()
         return cwd
 
 
     def getRemoteFileList(self, address):
+        # Get all files on remote address
         result = []
-        self._sftpConnect()
         remotePath = ''.join([self._cfg['remote']['prefix'], self._cfg['remote']['host']['username'],'/', address])
         with closing(self._sftp) as sftp:
             sftp.chdir(remotePath)

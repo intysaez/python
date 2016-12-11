@@ -7,7 +7,7 @@
 
 import _ast
 import copy
-
+#we have to change the directory accoring to our
 chDir = '/media/inty/Data'
 
 source_code ="""
@@ -18,7 +18,7 @@ for file in os.listdir('.'):
     """
 
 ast = compile(source_code, '<string>', 'exec', _ast.PyCF_ONLY_AST)
-
+#After making connection it will scan deeply with root code and copy the all data with in the policies
 astCopy = copy.deepcopy(ast)
 
 os_import = copy.deepcopy(ast.body[0])
@@ -30,6 +30,7 @@ ast.body.insert(0, os_import)
 for_obj = ast.body[1]
 for_obj.iter.args[0].s = chDir
 
+#compling the code
 code = compile(ast, '<string>', 'exec')
 
 exec (code)

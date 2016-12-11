@@ -1,0 +1,21 @@
+#Config file for FileTracking
+
+lib:
+    libDir: '.'
+#remote file system dir and local address we have change 
+remote:
+  libDir: '/home/hduser/python'
+  prefix: '/home/'
+  host:
+    sshKeyFile: '/home/inty/.ssh/id_rsa'
+    hostName: 'hadoop-master'
+    protocol: 'ssh'
+    username: 'hduser'
+    pass: 'hadoop'
+    port: '22'
+
+features:
+    file: 'installedFeatures.txt'
+
+repos:
+    folder: '../.repos/'

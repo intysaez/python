@@ -1,0 +1,20 @@
+#Config file for FileTracking
+
+lib:
+    libDir: '.'
+#Remote connection details that making prefect connection with two
+remote:
+  libDir: 'python'
+  host:
+    sshKeyFile: '/home/inty/.ssh/id_rsa'
+    hostName: 'hadoop-master'
+    protocol: 'ssh'
+    username: 'hduser'
+    pass: ''
+    port: 'default'
+
+features:
+    file: 'installedFeatures.txt'
+#HOME folder
+repos:
+    folder: '../.repos/'

@@ -106,17 +106,3 @@ class featuresMgt(loadConfig):
 
 
 
-import pprint
-from remoteSynch import remoteSync
-
-test = featuresMgt()
-print(test.getFeatures())
-print('New features coming from: ')
-print(test.updateList())
-pprint.pprint(test.reportDiff())
-
-#testRemote = remoteSync()
-
-#pprint(testRemote.getRemoteFileList())
-
-#Comment for identify this file

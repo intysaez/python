@@ -45,15 +45,3 @@ class reposManager():
                 return remote.getFileList(address)
 
 
-from pprint import pprint
-
-test = reposManager()
-fsHandle = rsyn.remoteSync()
-#pprint(fs.sshRemote(test.cleanPath(r'hduser@hadoop-master:python/files')))
-#pprint(fs.sshRemote(test.cleanPath(r'hduser@hadoop-master:python/files')))
-# pprint(test.getListOfFile(test.cleanPath(r'hduser@hadoop-master:python')))
-
-print('Local')
-pprint(fsHandle.getList(r'/home/inty', False))
-print('Remote')
-pprint(fsHandle.getList(r'hduser@hadoop-master:home/hduser'))

@@ -3,7 +3,13 @@
     Author zombie(c) 20016
     Python Class, Fall C 2016
 
-   A FileSystem utils runtime functions
+        A FileSystem utils runtime functions
+        This functions work on local
+        Runtime function to check if:
+            is a valid path on local host
+            is possible create a path name given
+            a combination: if valid or it can be created
+
 
 '''
 

@@ -13,7 +13,6 @@
 '''
 
 import os
-import platform
 import sys
 import fileSystemUtils as fs
 import remoteSynch as rsyn

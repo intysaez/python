@@ -15,7 +15,6 @@
 
 import os
 import hashlib
-import ruamel.yaml as yaml
 import constants as cts
 import pickle
 from loadCfg import loadConfig

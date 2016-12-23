@@ -25,24 +25,19 @@ class loadConfig():
             print('Error during load yml config file' + exc)
 
 
-    def get(self, key, inside = None):
+    def get(self, key, inside = None, splitter='->'):
         if isinstance(key, ymlClass.CommentedMap):
             if inside != None:
-                if len(inside.split('->')) > 1:
-                    return self.get(key[inside.split('->')[0]], inside[inside.find(inside.split('->')[1]):len(inside)])
+                if len(inside.split(splitter)) > 1:
+                    return self.get(key[inside.split(splitter)[0]], inside[inside.find(inside.split(splitter)[1]):len(inside)])
                 else:
                     return key[inside]
         else:
-            if len(key.split('->')) > 1:
-                return self.get(self.__cfg[key.split('->')[0]], key[key.find(key.split('->')[1]):len(key)])
+            if len(key.split(splitter)) > 1:
+                return self.get(self.__cfg[key.split(splitter)[0]], key[key.find(key.split(splitter)[1]):len(key)])
             else:
                 if isinstance(self.__cfg[key], ymlClass.CommentedMap):
-                    return iter(self.__cfg[key])
+                    return self.__cfg[key]
                 else:
                     return self.__cfg[key]
 
-
-
-test = loadConfig()
-# print(test.get('remote->host->sshKeyFile'))
-print(test.get('repos->folder'))

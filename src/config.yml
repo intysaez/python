@@ -12,7 +12,7 @@ remote:
     protocol: 'ssh'
     username: 'hduser'
     pass: 'hadoop'
-    port: '22'
+    port: 22
 
 features:
     file: 'installedFeatures.txt'

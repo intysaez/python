@@ -11,3 +11,8 @@ featureIgnore = '.fignore'
 ERROR_INVALID_NAME = 'A001'
 
 rtptclport = 'default'
+
+#Let read stuff in 64Kb chunck
+BUFF_SIZE = 65536
+
+default_lc_dir = '.'

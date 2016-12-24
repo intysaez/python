@@ -12,15 +12,15 @@ class loadConfig():
 
     __cfg = object
 
-    def __init__(self):
-        self.loadConfig()
+    def __init__(self, cfgpath):
+        self.loadConfig(cfgpath)
 
     def getCfg(self):
         return self.__cfg
 
-    def loadConfig(self):
+    def loadConfig(self, cfgpath):
         try:
-            self.__cfg = yaml.load(open(cts.configFileName,'r').read(), yaml.RoundTripLoader)
+            self.__cfg = yaml.load(open(cfgpath,'r').read(), yaml.RoundTripLoader)
         except yaml.YAMLError as exc:
             print('Error during load yml config file' + exc)
 

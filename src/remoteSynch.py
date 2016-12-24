@@ -7,6 +7,8 @@
 from loadCfg import loadConfig
 from contextlib import closing
 import tempfile
+import constants as cts
+import hashlib
 import os
 import paramiko
 import re
@@ -21,9 +23,11 @@ class remoteSync(loadConfig):
         self.__initializeSftp()
         self.__sftpConnect()
 
-    def __initializeCfg(self):
-        #Load config key-value
-        self._cfg = loadConfig.getCfg(self)
+    def __initializeLogFile(self):
+        # Log file for debug all paramiko module activities
+        logFile = tempfile.mkstemp('.log', 'ssh-')[1]
+
+        paramiko.util.log_to_file(logFile)
 
     def __initializeSftp(self):
         # Initialize the connection to secure file transfer protocol
@@ -81,13 +85,16 @@ class remoteSync(loadConfig):
 
 
     # Perform a local iteration over a local directory
-    def __lcl_PathIterator(self, path, files=True):
+    def __lcl_PathIterator(self, path, files=False):
         result = []
         if files:
             for filename in os.listdir(path):
-                result.append(filename)
+                result.append(''.join([path ,'/',filename]))
         else:
-            result = [items[0] for items in os.walk(path)]
+            for dirName, subdirName, filelist in os.walk(path):
+                for fname in filelist:
+                    result.append(''.join([dirName,'/', fname]))
+            # result = [items[0] for items in os.walk(path)]
         return result
 
     # Change the current directory by dir in remote machine
@@ -98,24 +105,29 @@ class remoteSync(loadConfig):
 
     # Emulate a walk on remote machine like os.walk on local
     def __rmt_walk(self, dir, container):
-        for filename in self._sftp.listdir(dir):
-            container.append(''.join([dir, '/', filename]))
+        for attr in self._sftp.listdir_attr(dir):
+            if stat.S_ISDIR(attr.st_mode):
+                self.__rmt_walk(''.join([dir,'/', attr.filename]), container)
+            else:
+                # for filename in self._sftp.listdir(dir):
+                container.append(''.join([dir, '/', attr.filename]))
 
 
     # Perform a iteration over a remote directory, add to the list all files in each directory
-    def __rmt_PathIterator(self, path, files=True):
+    def __rmt_PathIterator(self, path, files=False):
         result = []
         self.__rmt_Chdir(path)
         # After any operation over sftp, the transport close the socket on the channel
-        if files:
+        if not files:
             self.___openSock()
             # If directory is not empty
-            if len(self._sftp.listdir_attr(path)) > 1:
-                for attr in self._sftp.listdir_attr(path):
-                    if stat.S_ISDIR(attr.st_mode):
-                        self.__rmt_walk(attr.filename, result)
-                    else:
-                        result.append(''.join([path, '/', attr.filename]))
+            # if len(self._sftp.listdir_attr(path)) >= 1:
+            for attr in self._sftp.listdir_attr(path):
+                if stat.S_ISDIR(attr.st_mode):
+                    self.__rmt_walk(''.join([path,'/', attr.filename]), result)
+                    # self.__rmt_PathIterator(''.join([path,'/', attr.filename]))
+                else:
+                    result.append(''.join([path, '/', attr.filename]))
         else:
             # The last operation close the sock, re-open is required
             self.___openSock()
@@ -135,10 +147,26 @@ class remoteSync(loadConfig):
                 return False
         return True
 
+    def fileSignature(self, fileName, sha1=True):
+        if not sha1:
+            hash = hashlib.md5()
+        else:
+            hash = hashlib.sha1()
+        self.___openSock()
+        fHandle = self._sftp.open(filename=fileName)
+        try:
+            while True:
+                data = fHandle.read(cts.BUFF_SIZE)
+                if not data:
+                    break
+                hash.update(data)
+        finally:
+            fHandle.close()
+        return hash.hexdigest()
 
     # Get all files on address directory
     # Check if address is local or remote
-    def getList(self, address, files=True):
+    def getList(self, address, files=False):
         pattern = re.compile('(\w+)@(\w+\D+)(:){1}(\w+\D+\w+)')
         result = []
         if pattern.search(address) != None:
@@ -153,6 +181,3 @@ class remoteSync(loadConfig):
             result = self.__lcl_PathIterator(address, files)
 
         return result
-
-
-

@@ -15,8 +15,8 @@ import stat
 
 class remoteSync(loadConfig):
 
-    def __init__(self):
-        loadConfig.__init__(self)
+    def __init__(self, cfgpath):
+        loadConfig.__init__(self, cfgpath)
         self.__initializeCfg()
         self.__initializeLogFile()
         self.__initializeSftp()
@@ -116,14 +116,13 @@ class remoteSync(loadConfig):
         # After any operation over sftp, the transport close the socket on the channel
         if files:
             self.___openSock()
-            for attr in self._sftp.listdir_attr(path):
-                if stat.S_ISDIR(attr.st_mode):
-                    if len(self._sftp.listdir(attr.filename)) != 0:
+            # If directory is not empty
+            if len(self._sftp.listdir_attr(path)) > 1:
+                for attr in self._sftp.listdir_attr(path):
+                    if stat.S_ISDIR(attr.st_mode):
                         self.__rmt_walk(attr.filename, result)
                     else:
-                        pass
-                else:
-                    result.append(''.join([path, '/', attr.filename]))
+                        result.append(''.join([path, '/', attr.filename]))
         else:
             # The last operation close the sock, re-open is required
             self.___openSock()

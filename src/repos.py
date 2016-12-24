@@ -26,8 +26,8 @@ BUF_SIZE = 65536
 class featuresMgt(loadConfig):
     __featuresList = {}
 
-    def __init__(self):
-        loadConfig.__init__(self)
+    def __init__(self, cfg):
+        loadConfig.__init__(self, cfg)
         self.loadCfg()
 
 

@@ -17,7 +17,7 @@ class remoteSync(loadConfig):
 
     def __init__(self, cfgpath):
         loadConfig.__init__(self, cfgpath)
-        self.__initializeCfg()
+        # self.__initializeCfg()
         self.__initializeLogFile()
         self.__initializeSftp()
         self.__sftpConnect()
@@ -37,15 +37,15 @@ class remoteSync(loadConfig):
         self._sftp_life = False
         self._sftp = False
 
-        if self._cfg['remote']['host']['username'] == None:
+        if self.get('remote->host->username') == None:
             self._transport = paramiko.Transport((os.environ['LOGNAME'], 22))
         else:
-            self._transport = paramiko.Transport((self._cfg['remote']['host']['hostName'],int(self._cfg['remote']['host']['port'])))
+            self._transport = paramiko.Transport((self.get('remote->host->hostName'),int(self.get('remote->host->port'))))
 
         self._transport_live = True
 
-        if self._cfg['remote']['host']['pass'] != None:
-            self._transport.connect(username=self._cfg['remote']['host']['username'], password= self._cfg['remote']['host']['pass'])
+        if self.get('remote->host->pass') != None:
+            self._transport.connect(username=self.get('remote->host->username'), password= self.get('remote->host->pass'))
         else:
             #User private key
             if os.path.exists(os.path.expanduser('~/.ssh/id_rsa')):
@@ -57,7 +57,7 @@ class remoteSync(loadConfig):
             private_key_file = os.path.expanduser(private_key)
             rsa_key = paramiko.RSAKey.from_private_key_file(private_key_file)
             private_key = None
-            self._transport.connect(username= self._cfg['remote']['host']['username'], pkey= rsa_key)
+            self._transport.connect(username= self.get('remote->host->username'), pkey= rsa_key)
 
 
     # Open a paramiko SSHClient Transport Socket
@@ -75,7 +75,7 @@ class remoteSync(loadConfig):
 
 
     # Will get a file: from remote by local request
-    def get(self, remotepath, localpath=None):
+    def getFile(self, remotepath, localpath=None):
         pass
 
     # Return a current directory where SSHClient are
@@ -151,7 +151,8 @@ class remoteSync(loadConfig):
         if pattern.search(address) != None:
             # Remote address
             if not self.__rmt_Is_pathName_valid(''.join(['/', address.split(':')[1]])):
-                path = ''.join([self._cfg['remote']['prefix'], self._cfg['remote']['host']['username'],'/', address.split(':')[1]])
+                # path = ''.join([self._cfg['remote']['prefix'], self._cfg['remote']['host']['username'],'/', address.split(':')[1]])
+                path = ''.join([self.get('remote->prefix'), self.get('remote->host->username'),'/', address.split(':')[1]])
             else:
                 path = ''.join(['/', address.split(':')[1]])
             result = self.__rmt_PathIterator(path, files)

@@ -17,16 +17,9 @@ class remoteSync(loadConfig):
 
     def __init__(self, cfgpath):
         loadConfig.__init__(self, cfgpath)
-        # self.__initializeCfg()
         self.__initializeLogFile()
         self.__initializeSftp()
         self.__sftpConnect()
-
-    def __initializeLogFile(self):
-        # Log file for debug all paramiko module activities
-        logFile = tempfile.mkstemp('.log','ssh-')[1]
-        paramiko.util.log_to_file(logFile)
-
 
     def __initializeCfg(self):
         #Load config key-value

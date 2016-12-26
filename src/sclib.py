@@ -47,12 +47,11 @@ def filekey(cfg, inside, sha1, origin, remote):
                 lkey = fsRepo.fileSignature([filename for filename in [item for item in orList]  if os.path.basename(filename) == file ][0])
                 rkey = fsHandle.fileSignature(rmList[index], sha1)
                 if lkey != rkey:
-                    click.echo(click.style(''.join(['Origin',' <> ', lkey]), fg='red'))
-                    click.echo(click.style(''.join(['Remote',' <> ', rkey]), fg='blue'))
+                    click.echo(click.style('Origin hash', fg='magenta') + click.style(''.join([' <> ', lkey]), fg='red'))
+                    click.echo(click.style('Origin hash', fg='magenta') + click.style(''.join([' <> ', rkey]), fg='blue'))
                 else:
-                    click.echo(click.style(''.join(['Origin', ' <> ', lkey]), fg='blue'))
-                    click.echo(click.style(''.join(['Remote', ' <> ', rkey]), fg='blue'))
-
+                    click.echo(click.style('Origin hash', fg='magenta') + click.style(''.join([' <> ', lkey]), fg='blue'))
+                    click.echo(click.style('Origin hash', fg='magenta') + click.style(''.join([' <> ', rkey]), fg='blue'))
 
 
 # click.echo(''.join([rmList[index],' ',fsHandle.fileSignature(rmList[index], sha1)]))

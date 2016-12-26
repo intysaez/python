@@ -25,6 +25,7 @@ def filekey(cfg, inside, sha1, origin, remote):
         Team # 2: File keys for all files on remote that match with origin
     '''
     fsHandle = remoteSynch.remoteSync(cfg)
+    fsRepo = repos.featuresMgt(cfg)
 
     orList = fsHandle.getList(click.format_filename(origin), inside)
     rmList = fsHandle.getList(click.format_filename(remote), inside)
@@ -35,10 +36,26 @@ def filekey(cfg, inside, sha1, origin, remote):
         matches = [item for item in [os.path.basename(file) for file in rmList] if item in [os.path.basename(file) for file in orList]]
         un_matches = [item for item in [os.path.basename(file) for file in rmList] if item not in [os.path.basename(file) for file in orList]]
 
+        click.echo(''.join(['New files:',' ', str(len(un_matches))]))
+        if len(un_matches) != 0:
+            pprint.pprint(un_matches)
+
         for file in matches:
             for index in [item for item in range(len(rmList)) if os.path.basename(rmList[item]) == file]:
-                click.echo(''.join([file,' @ ', os.path.dirname(rmList[index]), ' <> ', fsHandle.fileSignature(rmList[index], sha1)]))
-                # click.echo(''.join([rmList[index],' ',fsHandle.fileSignature(rmList[index], sha1)]))
+                click.echo(''.join([file,' @ ', os.path.dirname(rmList[index])]))
+
+                lkey = fsRepo.fileSignature([filename for filename in [item for item in orList]  if os.path.basename(filename) == file ][0])
+                rkey = fsHandle.fileSignature(rmList[index], sha1)
+                if lkey != rkey:
+                    click.echo(click.style(''.join(['Origin',' <> ', lkey]), fg='red'))
+                    click.echo(click.style(''.join(['Remote',' <> ', rkey]), fg='blue'))
+                else:
+                    click.echo(click.style(''.join(['Origin', ' <> ', lkey]), fg='blue'))
+                    click.echo(click.style(''.join(['Remote', ' <> ', rkey]), fg='blue'))
+
+
+
+# click.echo(''.join([rmList[index],' ',fsHandle.fileSignature(rmList[index], sha1)]))
     else:
         click.echo('Remote does not have files')
 
